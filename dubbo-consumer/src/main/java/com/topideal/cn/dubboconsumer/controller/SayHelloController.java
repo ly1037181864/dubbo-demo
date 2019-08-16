@@ -13,7 +13,8 @@ import java.util.concurrent.ExecutionException;
 @RestController
 public class SayHelloController {
 
-    @Reference(validation = "true",timeout = 3000,
+    @Reference(validation = "true",timeout = 3000,loadbalance = "roundrobin",
+            sticky = true,//自动将请求发送到同一服务器，配置该属性会导致负载策略失效
             mock = "com.topideal.cn.dubboconsumer.service.impl.SayHelloMockImpl",
             stub = "com.topideal.cn.dubboconsumer.service.impl.SayHelloStubImpl")
     private ISayHelloService service;

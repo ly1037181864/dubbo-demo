@@ -1,4 +1,4 @@
-package com.topideal.cn.dubboprovider.service.impl;
+package com.topideal.cn.dubbo.provider.service.impl;
 
 import com.topideal.cn.dubbo.entity.Person;
 import com.topideal.cn.dubbo.service.ISayHelloService;
@@ -19,7 +19,7 @@ public class SayHelloServiceImpl implements ISayHelloService {
         System.out.println("consumerSide:\t"+consumerSide);
         String application = RpcContext.getContext().getUrl().getParameter("application");
         System.out.println("application:\t"+application);
-        return "hello "+name +"\t 欢迎使用dubbo1服务";
+        return "hello "+name +"\t 欢迎使用dubbo2服务";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class SayHelloServiceImpl implements ISayHelloService {
                 }
             }
         }
-        return "hello "+person.toString() +"\t 欢迎使用dubbo1服务";
+        return "hello "+person.toString() +"\t 欢迎使用dubbo2服务";
     }
 
     /**
