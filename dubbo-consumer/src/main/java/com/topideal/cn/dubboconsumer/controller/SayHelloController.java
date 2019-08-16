@@ -1,7 +1,9 @@
 package com.topideal.cn.dubboconsumer.controller;
 
 import com.topideal.cn.dubbo.entity.Person;
+import com.topideal.cn.dubbo.service.ICallbackService;
 import com.topideal.cn.dubbo.service.ISayHelloService;
+import com.topideal.cn.dubboconsumer.service.impl.CallbackListerner;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +13,12 @@ import java.util.concurrent.ExecutionException;
 @RestController
 public class SayHelloController {
 
-    @Reference(validation = "true",timeout = 3000)
+    @Reference(validation = "true",timeout = 3000,
+            mock = "com.topideal.cn.dubboconsumer.service.impl.SayHelloMockImpl",
+            stub = "com.topideal.cn.dubboconsumer.service.impl.SayHelloStubImpl")
     private ISayHelloService service;
+    @Reference
+    private ICallbackService callbackService;
 
     @GetMapping("/sayHello/{name}")
     public String sayHello(@PathVariable String name){
@@ -72,5 +78,11 @@ public class SayHelloController {
             result = e.getMessage();
         }
         return result.toString();
+    }
+
+    @GetMapping("provider/callback/{name}")
+    public String callBack(@PathVariable String name){
+        callbackService.addListener(name, new CallbackListerner());
+        return "change事件调用成功";
     }
 }

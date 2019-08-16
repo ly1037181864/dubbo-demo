@@ -1,0 +1,16 @@
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+
+    <bean id="callbackService" class="com.topideal.cn.dubboprovider.service.impl.CallBackServiceImpl"/>
+    <dubbo:service interface="com.topideal.cn.dubbo.service.ICallbackService" ref="callbackService" connections="1" callbacks="1000">
+        <dubbo:method name="addListener">
+            <dubbo:argument type="com.topideal.cn.dubbo.service.ICallbackListerner" callback="true"/>
+        </dubbo:method>
+    </dubbo:service>
+
+
+</beans>
