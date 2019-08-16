@@ -30,12 +30,12 @@ public class SayHelloController {
     }
 
     /**
-     * 客户端异步调用，注意超时设置
+     * 客户端异步调用，注意超时设置 默认是同步调用
      * @param name
      * @return
      */
-    @GetMapping("/async/sayHello/{name}")
-    public String sayHelloForAsync(@PathVariable String name){
+    @GetMapping("/consumer/async/sayHello/{name}")
+    public String sayHelloForCAsync(@PathVariable String name){
         CompletableFuture<String> future = service.sayHelloForConsumerAsync(name);
 //        final StringBuilder result = new StringBuilder();
 //        future.whenComplete((res,e)->{
@@ -44,6 +44,25 @@ public class SayHelloController {
 //            else
 //                result.append(res);
 //        });
+        String result = null;
+        try {
+            result = future.get();//阻塞读
+        } catch (InterruptedException e) {
+            result = e.getMessage();
+        } catch (ExecutionException e) {
+            result = e.getMessage();
+        }
+        return result.toString();
+    }
+
+    /**
+     * 服务端异步调用，注意超时设置 默认是同步调用
+     * @param name
+     * @return
+     */
+    @GetMapping("/provider/async/sayHello/{name}")
+    public String sayHelloForPAsync(@PathVariable String name){
+        CompletableFuture<String> future = service.sayHelloForProviderAsync(name);
         String result = null;
         try {
             result = future.get();//阻塞读

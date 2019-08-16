@@ -11,4 +11,6 @@ public interface ISayHelloService {
     String sayHello(Person person);
 
     CompletableFuture<String> sayHelloForConsumerAsync(String name);
+
+    CompletableFuture<String> sayHelloForProviderAsync(String name);
 }

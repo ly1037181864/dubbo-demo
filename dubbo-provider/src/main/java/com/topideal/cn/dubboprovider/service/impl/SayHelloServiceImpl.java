@@ -47,4 +47,22 @@ public class SayHelloServiceImpl implements ISayHelloService {
         }
         return CompletableFuture.completedFuture(sayHello(name));
     }
+
+    /**
+     * 服务端异步
+     * @param name
+     * @return
+     */
+    @Override
+    public CompletableFuture<String> sayHelloForProviderAsync(String name) {
+        RpcContext context = RpcContext.getContext();
+        return CompletableFuture.supplyAsync(()->{//业务执行已从dubbo线程切换到业务线程，避免了对Dubbo线程池的阻塞
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return sayHello(name);
+        });
+    }
 }
