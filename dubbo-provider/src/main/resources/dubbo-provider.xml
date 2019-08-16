@@ -5,12 +5,24 @@
        http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
 
-    <bean id="callbackService" class="com.topideal.cn.dubboprovider.service.impl.CallBackServiceImpl"/>
-    <dubbo:service interface="com.topideal.cn.dubbo.service.ICallbackService" ref="callbackService" connections="1" callbacks="1000">
-        <dubbo:method name="addListener">
-            <dubbo:argument type="com.topideal.cn.dubbo.service.ICallbackListerner" callback="true"/>
-        </dubbo:method>
-    </dubbo:service>
+    <!--<bean id="callbackService" class="com.topideal.cn.dubboprovider.service.impl.CallBackServiceImpl"/>-->
+    <!--<dubbo:service interface="com.topideal.cn.dubbo.service.ICallbackService" ref="callbackService" connections="1" callbacks="1000">-->
+        <!--<dubbo:method name="addListener">-->
+            <!--<dubbo:argument type="com.topideal.cn.dubbo.service.ICallbackListerner" callback="true"/>-->
+        <!--</dubbo:method>-->
+    <!--</dubbo:service>-->
+
+    <dubbo:protocol name="dubbo" serialization="kryo" optimizer="com.topideal.cn.dubboprovider.service.impl.SerializationOptimizerImpl"/>
+    <dubbo:protocol name="dubbo" port="20880"/>
+
+    <dubbo:application name="dubbo-provider"/>
+    <dubbo:registry address="zookeeper://localhost:2181"/>
+
+    <bean id="sayService" class="com.topideal.cn.dubboprovider.service.impl.SayHelloServiceImpl"/>
+    <bean id="payService" class="com.topideal.cn.dubboprovider.service.impl.PayServiceImpl"/>
+
+    <dubbo:service interface="com.topideal.cn.dubbo.service.ISayHelloService" ref="sayService" />
+    <dubbo:service interface="com.topideal.cn.dubbo.service.IPayService" ref="payService" />
 
 
 </beans>

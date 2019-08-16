@@ -26,7 +26,7 @@ public class SayHelloServiceImpl implements ISayHelloService {
     public String sayHello(Person person) {
         //上下文信息 可以实现动态参数注入
         RpcContext context = RpcContext.getContext();
-        System.out.println(person.toString() +"\t 欢迎使用dubbo1服务");
+        System.out.println(person.toString() +"\t 欢迎使用dubbo2服务");
         //上下文信息
         boolean consumerSide = RpcContext.getContext().isConsumerSide();
         System.out.println("consumerSide:\t"+consumerSide);
