@@ -5,10 +5,13 @@ import com.topideal.cn.dubbo.service.ISayHelloService;
 import org.apache.dubbo.config.annotation.Reference;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 @RestController
 public class SayHelloController {
 
-    @Reference(validation = "true")
+    @Reference(validation = "true",timeout = 3000)
     private ISayHelloService service;
 
     @GetMapping("/sayHello/{name}")
@@ -24,5 +27,31 @@ public class SayHelloController {
     @PostMapping("/sayHello/person")
     public String sayHello2(@RequestBody Person person){
         return service.sayHello(person);
+    }
+
+    /**
+     * 客户端异步调用，注意超时设置
+     * @param name
+     * @return
+     */
+    @GetMapping("/async/sayHello/{name}")
+    public String sayHelloForAsync(@PathVariable String name){
+        CompletableFuture<String> future = service.sayHelloForConsumerAsync(name);
+//        final StringBuilder result = new StringBuilder();
+//        future.whenComplete((res,e)->{
+//            if(e!=null)
+//                result.append(e.getMessage());
+//            else
+//                result.append(res);
+//        });
+        String result = null;
+        try {
+            result = future.get();//阻塞读
+        } catch (InterruptedException e) {
+            result = e.getMessage();
+        } catch (ExecutionException e) {
+            result = e.getMessage();
+        }
+        return result.toString();
     }
 }
